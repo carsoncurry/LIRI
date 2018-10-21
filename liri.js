@@ -44,11 +44,11 @@ function searchSpotify(secondInput) {
                 return;
             }
 
-            var songInfo = data.tracks.items;
-            console.log("Artist(s): " + songInfo[0].artists[0].name);
-            console.log("Song: " + songInfo[0].name);
-            console.log("Preview Link: " + songInfo[0].preview_url);
-            console.log("Album: " + songInfo[0].album.name);
+            var result = data.tracks.items;
+            console.log("Artist(s): " + result[0].artists[0].name);
+            console.log("Song: " + result[0].name);
+            console.log("Preview Link: " + result[0].preview_url);
+            console.log("Album: " + result[0].album.name);
         });
 }
 
@@ -75,30 +75,24 @@ function searchMovies(secondInput) {
             secondInput = "Mr. Nobody";
         } if (!error && response.statusCode === 200) {
 
-            console.log("Title: " + JSON.parse(body).Title);
-            console.log("Release: " + JSON.parse(body).Year);
-            console.log("IMDB Rating: " + JSON.parse(body).imdbRating);
-            console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value);
-            console.log("Country: " + JSON.parse(body).Country);
-            console.log("Language: " + JSON.parse(body).Language);
-            console.log("Plot: " + JSON.parse(body).Plot);
-            console.log("Cast: " + JSON.parse(body).Actors);
+            var result = JSON.parse(body);
+            console.log("Title: " + result.Title);
+            console.log("Release: " + result.Year);
+            console.log("IMDB Rating: " + result.imdbRating);
+            console.log("Rotten Tomatoes Rating: " + result.Ratings[1].Value);
+            console.log("Country: " + result.Country);
+            console.log("Language: " + result.Language);
+            console.log("Plot: " + result.Plot);
+            console.log("Cast: " + result.Actors);
         }
     });
 };
 
 // Do What LIRI Says Function
 function liriSays() {
-    fs.readFile('random.txt', 'utf8', function(error, data) {
-        if (error) {
-            return console.log(error);
-        }
+    fs.readFile('random.txt', "utf8", function(error, data) {
+        var txt = data.split(',');
 
-        var dataArr = data.search(",");
-
-        if (dataArr[0] === 'spotify-this-song') {
-            var songcheck = dataArr[1].slice(1, -1);
-            searchSpotify(songcheck);
-        }
+        searchSpotify(txt[1]);
     });
-}
+};
